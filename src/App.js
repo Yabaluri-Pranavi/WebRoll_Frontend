@@ -1,85 +1,85 @@
+
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useNavigate
+} from "react-router-dom";
+import "./App.css";
 
 function Home() {
-    return (
-        <div>
-            <h1>WebRoll</h1>
-            <h2>Attendance Management System</h2>
+  return (
+    <div className="home">
+      <p>SMART • SIMPLE • ORGANIZED</p>
 
-            <p>Select your login type</p>
+      <h1>Welcome to WebRoll</h1>
 
-            <div>
-                <Link to="/teacher-login">
-                    <button>Teacher Login</button>
-                </Link>
+      <p>Attendance management made easier. Sign in to continue to your portal.</p>
 
-                <Link to="/admin-login">
-                    <button>Admin Login</button>
-                </Link>
+      <div className="login-options">
+        <section>
+          <h2>Student</h2>
+          <p>View your attendance and attendance history.</p>
+          <Link to="/login/student">Student Login</Link>
+        </section>
 
-                <Link to="/student-login">
-                    <button>Student Login</button>
-                </Link>
-            </div>
-        </div>
-    );
+        <section>
+          <h2>Teacher</h2>
+          <p>Manage classes and record student attendance.</p>
+          <Link to="/login/teacher">Teacher Login</Link>
+        </section>
+
+        <section>
+          <h2>Administrator</h2>
+          <p>Manage users, subjects, and attendance records.</p>
+          <Link to="/login/admin">Admin Login</Link>
+        </section>
+      </div>
+
+      <footer>WebRoll Attendance Management System</footer>
+    </div>
+  );
 }
 
-function LoginPage({ type }) {
-    return (
-        <div>
-            <h2>{type} Login</h2>
+function LoginPage({ role }) {
+  const navigate = useNavigate();
 
-            <input
-                type="text"
-                placeholder="Username"
-            />
+  return (
+    <div className="login-page">
+      <h1>WebRoll</h1>
+      <h2>{role} Login</h2>
 
-            <br />
-            <br />
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        alert("Login functionality will be added later.");
+      }}>
+        <p>
+          <input type="text" placeholder="Username" required />
+        </p>
+        <p>
+          <input type="password" placeholder="Password" required />
+        </p>
+        <button type="submit">Login</button>
+      </form>
 
-            <input
-                type="password"
-                placeholder="Password"
-            />
-
-            <br />
-            <br />
-
-            <button>Login</button>
-        </div>
-    );
+      <button onClick={() => navigate("/")}>Back to Home</button>
+    </div>
+  );
 }
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-
-                <Route
-                    path="/"
-                    element={<Home />}
-                />
-
-                <Route
-                    path="/teacher-login"
-                    element={<LoginPage type="Teacher" />}
-                />
-
-                <Route
-                    path="/admin-login"
-                    element={<LoginPage type="Admin" />}
-                />
-
-                <Route
-                    path="/student-login"
-                    element={<LoginPage type="Student" />}
-                />
-
-            </Routes>
-        </BrowserRouter>
-    );
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login/student" element={<LoginPage role="Student" />} />
+        <Route path="/login/teacher" element={<LoginPage role="Teacher" />} />
+        <Route path="/login/admin" element={<LoginPage role="Admin" />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
