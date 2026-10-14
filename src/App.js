@@ -188,6 +188,7 @@ function LoginPage({ role }) {
         body: JSON.stringify({
           username: username.trim(),
           password,
+          role,
         }),
       });
 
@@ -332,7 +333,7 @@ function StudentDashboard() {
 function StudentRecords() {
   const [name, setName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [students, setStudents] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -361,14 +362,14 @@ function StudentRecords() {
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, rollNumber, email }),
+        body: JSON.stringify({ name, rollNumber, password }),
       });
 
       if (!res.ok) throw new Error();
 
       setName("");
       setRollNumber("");
-      setEmail("");
+      setPassword("");
       setMessage("Student saved successfully!");
       await loadStudents();
     } catch {
@@ -409,10 +410,13 @@ function StudentRecords() {
             />
             <input
               className="text-input"
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="password"
+              placeholder="Password (at least 8 characters)"
+              autoComplete="new-password"
+              minLength={8}
+              maxLength={72}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <button type="submit" className="btn btn-primary" disabled={loading}>
@@ -429,7 +433,6 @@ function StudentRecords() {
                 <li key={s.studentId}>
                   <strong>{s.name}</strong>
                   <span>{s.rollNumber}</span>
-                  <em>{s.email}</em>
                 </li>
               ))}
             </ul>
